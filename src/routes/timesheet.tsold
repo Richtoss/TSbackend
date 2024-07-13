@@ -1,11 +1,11 @@
 import express from 'express';
-import { auth, requireManager, AuthRequest } from '../middleware/auth';
+import { auth, requireManager } from '../middleware/auth';
 import Timesheet from '../models/Timesheet';
 
 const router = express.Router();
 
 // Create a new timesheet
-router.post('/', auth, async (req: AuthRequest, res) => {
+router.post('/', auth, async (req, res) => {
   try {
     const { weekStart } = req.body;
     const timesheet = new Timesheet({
@@ -20,7 +20,7 @@ router.post('/', auth, async (req: AuthRequest, res) => {
 });
 
 // Add entry to timesheet
-router.post('/:id/entry', auth, async (req: AuthRequest, res) => {
+router.post('/:id/entry', auth, async (req, res) => {
   try {
     const { date, jobName, hours } = req.body;
     const timesheet = await Timesheet.findOne({ _id: req.params.id, user: req.user?._id });
@@ -40,7 +40,7 @@ router.post('/:id/entry', auth, async (req: AuthRequest, res) => {
 });
 
 // Get user's timesheets
-router.get('/', auth, async (req: AuthRequest, res) => {
+router.get('/', auth, async (req, res) => {
   try {
     const timesheets = await Timesheet.find({ user: req.user?._id })
       .sort({ weekStart: -1 })
@@ -52,7 +52,7 @@ router.get('/', auth, async (req: AuthRequest, res) => {
 });
 
 // Mark timesheet as completed
-router.patch('/:id/complete', auth, async (req: AuthRequest, res) => {
+router.patch('/:id/complete', auth, async (req, res) => {
   try {
     const timesheet = await Timesheet.findOne({ _id: req.params.id, user: req.user?._id });
 
