@@ -4,7 +4,6 @@ import Job from '../models/Job';
 
 const router = express.Router();
 
-// Create a new job (manager only)
 router.post('/', auth, requireManager, async (req, res) => {
   try {
     const { name } = req.body;
@@ -16,7 +15,6 @@ router.post('/', auth, requireManager, async (req, res) => {
   }
 });
 
-// Get all jobs
 router.get('/', auth, async (req, res) => {
   try {
     const jobs = await Job.find();

@@ -4,7 +4,6 @@ import Timesheet from '../models/Timesheet';
 
 const router = express.Router();
 
-// Create a new timesheet
 router.post('/', auth, async (req: AuthRequest, res) => {
   try {
     const { weekStart } = req.body;
@@ -19,7 +18,6 @@ router.post('/', auth, async (req: AuthRequest, res) => {
   }
 });
 
-// Add entry to timesheet
 router.post('/:id/entry', auth, async (req: AuthRequest, res) => {
   try {
     const { date, jobName, hours } = req.body;
@@ -39,7 +37,6 @@ router.post('/:id/entry', auth, async (req: AuthRequest, res) => {
   }
 });
 
-// Get user's timesheets
 router.get('/', auth, async (req: AuthRequest, res) => {
   try {
     const timesheets = await Timesheet.find({ user: req.user?._id })
@@ -51,7 +48,6 @@ router.get('/', auth, async (req: AuthRequest, res) => {
   }
 });
 
-// Mark timesheet as completed
 router.patch('/:id/complete', auth, async (req: AuthRequest, res) => {
   try {
     const timesheet = await Timesheet.findOne({ _id: req.params.id, user: req.user?._id });
@@ -69,7 +65,6 @@ router.patch('/:id/complete', auth, async (req: AuthRequest, res) => {
   }
 });
 
-// Get all timesheets (manager only)
 router.get('/all', auth, requireManager, async (req, res) => {
   try {
     const timesheets = await Timesheet.find().populate('user', 'email');
